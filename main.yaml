@@ -1,3 +1,4 @@
+AWSTemplateFormatVersion: "2010-09-09"
 Resources:
   myVPC:
     Type: AWS::EC2::VPC
@@ -9,5 +10,43 @@ Resources:
       Tags:
        - Key: Name
          Value: first-vpc
+  myInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: first-vpc-IGW  
+  AttachGateway:
+   Type: AWS::EC2::VPCGatewayAttachment
+  Properties:
+    VpcId:
+       Ref: VPC
+    InternetGatewayId:
+       Ref: myInternetGateway
+  AttachVpnGateway:
+   Type: AWS::EC2::VPCGatewayAttachment
+  Properties:
+    VpcId:
+       Ref: VPC
+    VpnGatewayId:
+       Ref: myVPNGateway      Value: first-vpc-IGW
+  public-Subnet:
+   Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:  myVPC
+      CidrBlock: 10.0.0.0/20
+      AvailabilityZone: "ap-south-1a"
+      Tags:
+      - Key: Name
+        Value: first-vpc-pubsubnet
+  private-Subnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:  myVPC
+      CidrBlock: 10.0.16.0/20
+      AvailabilityZone: "ap-south-ab"
+      Tags:
+      - Key: Name
+        Value: first-vpc-private-subnet
   
   
